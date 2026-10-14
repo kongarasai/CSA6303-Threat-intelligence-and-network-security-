@@ -1,0 +1,63 @@
+
+import socket
+from datetime import datetime
+
+def scan_ports(target, ports):
+    print("=" * 55)
+    print("       PYTHON VULNERABILITY ASSESSMENT")
+    print("=" * 55)
+    print("Target:", target)
+    print("Started:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    print("-" * 55)
+
+    open_ports = []
+
+    for port in ports:
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                sock.settimeout(1)
+                result = sock.connect_ex((target, port))
+
+                if result == 0:
+                    try:
+                        service = socket.getservbyport(port, "tcp")
+                    except OSError:
+                        service = "Unknown"
+
+                    open_ports.append(port)
+                    print(f"Port {port:<5} OPEN   Service: {service}")
+
+        except socket.gaierror:
+            print("Error: Hostname could not be resolved.")
+            return
+        except OSError as error:
+            print(f"Scanning error: {error}")
+            return
+
+    print("-" * 55)
+    print("Scan completed.")
+    print("Open ports found:", open_ports)
+
+    if open_ports:
+        print("Assessment: Review these services for unnecessary exposure.")
+    else:
+        print("No open ports found in the selected port list.")
+
+    print("=" * 55)
+
+
+if __name__ == "__main__":
+    target = input(
+        "Enter target IP (127.0.0.1 for your own PC): "
+    ).strip()
+
+    # Common TCP ports
+    ports_to_scan = [
+        21, 22, 23, 25, 53, 80, 110,
+        135, 139, 143, 443, 445, 3306, 3389, 8080
+    ]
+
+    if target:
+        scan_ports(target, ports_to_scan)
+    else:
+        print("Please enter a target IP.")
