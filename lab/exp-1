@@ -1,0 +1,74 @@
+
+def identify_threat_intelligence(scenario):
+    text = scenario.lower()
+
+    if any(word in text for word in [
+        "bank", "banking", "credit card", "financial transaction"
+    ]):
+        industry = "Banking"
+        area = "Fraud Prevention"
+        explanation = (
+            "Detect fraudulent transactions, monitor suspicious "
+            "activity, and identify financial fraud patterns."
+        )
+
+    elif any(word in text for word in [
+        "hospital", "healthcare", "patient", "medical records"
+    ]):
+        industry = "Healthcare"
+        area = "Data Protection"
+        explanation = (
+            "Protect patient records, detect ransomware, "
+            "and prevent unauthorized access."
+        )
+
+    elif any(word in text for word in [
+        "e-commerce", "ecommerce", "online store",
+        "online shopping", "retailer", "refund fraud"
+    ]):
+        industry = "E-commerce"
+        area = "Fraud Prevention"
+        explanation = (
+            "Detect fake orders, payment fraud, refund abuse, "
+            "and suspicious customer accounts."
+        )
+
+    elif any(word in text for word in [
+        "college", "university", "school", "student records"
+    ]):
+        industry = "Education"
+        area = "Data Protection"
+        explanation = (
+            "Protect student information and detect phishing "
+            "and unauthorized access."
+        )
+
+    else:
+        industry = "General Business"
+        area = "Threat Monitoring"
+        explanation = (
+            "Monitor cyber threats, suspicious activities, "
+            "and potential security risks."
+        )
+
+    print("\n" + "=" * 60)
+    print(" THREAT INTELLIGENCE APPLICATION AREA IDENTIFIER")
+    print("=" * 60)
+    print("Industry          :", industry)
+    print("Application Area  :", area)
+    print("Explanation       :", explanation)
+    print("=" * 60)
+
+
+def main():
+    print("THREAT INTELLIGENCE CLASSIFIER")
+    scenario = input("\nEnter a short business scenario:\n> ")
+
+    if scenario.strip():
+        identify_threat_intelligence(scenario)
+    else:
+        print("Please enter a valid business scenario.")
+
+
+if __name__ == "__main__":
+    main()
