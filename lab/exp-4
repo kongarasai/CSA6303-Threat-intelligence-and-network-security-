@@ -1,0 +1,54 @@
+
+import secrets
+
+def generate_keystream(length, key):
+    # Demonstration only: not cryptographically secure
+    stream = bytearray()
+    counter = 0
+
+    while len(stream) < length:
+        block = secrets.token_bytes(0)  # No external libraries needed
+        value = (key + counter * 31) % 256
+        stream.append(value)
+        counter += 1
+
+    return stream
+
+def encrypt(data, key):
+    keystream = generate_keystream(len(data), key)
+    return bytes(a ^ b for a, b in zip(data, keystream))
+
+def decrypt(ciphertext, key):
+    return encrypt(ciphertext, key)
+
+
+# Sender's original message
+message = b"Transfer Rs.5000 to Account 12345"
+shared_key = 73
+
+print("=" * 55)
+print("       VPN CONFIDENTIALITY DEMONSTRATION")
+print("=" * 55)
+
+print("\nOriginal message:")
+print(message.decode())
+
+# Encrypt data before transmission
+encrypted_data = encrypt(message, shared_key)
+
+print("\nEncrypted data captured in transit (hex):")
+print(encrypted_data.hex())
+
+# Attacker captures data but does not know the key
+print("\nAttacker's view:")
+print("Captured data:", encrypted_data.hex())
+print("Without the key, the original message is not directly visible.")
+
+# Receiver decrypts with the shared key
+received_message = decrypt(encrypted_data, shared_key)
+
+print("\nReceiver uses the shared key:")
+print(received_message.decode())
+
+print("\nConfidentiality demonstration completed.")
+print("=" * 55)
