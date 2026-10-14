@@ -1,0 +1,69 @@
+
+def classify_threat_intelligence(description, audience):
+    text = (description + " " + audience).lower()
+
+    strategic_keywords = [
+        "business leaders", "executives", "management",
+        "board of directors", "long-term trends",
+        "business risk", "national security", "policy",
+        "senior management", "strategic planning"
+    ]
+
+    tactical_keywords = [
+        "security analysts", "threat actors",
+        "attack techniques", "ttps", "mitre att&ck",
+        "indicators of compromise", "iocs",
+        "phishing techniques", "malware analysis",
+        "defensive strategies"
+    ]
+
+    operational_keywords = [
+        "soc team", "incident response",
+        "security operations", "active attack",
+        "live incident", "attacker ip",
+        "malicious ip", "blocked ip",
+        "urgent alert", "compromised server",
+        "immediate action"
+    ]
+
+    scores = {
+        "Strategic": sum(word in text for word in strategic_keywords),
+        "Tactical": sum(word in text for word in tactical_keywords),
+        "Operational": sum(word in text for word in operational_keywords)
+    }
+
+    print("\n===== THREAT INTELLIGENCE CLASSIFIER =====")
+    print("Description:", description)
+    print("Intended audience:", audience)
+
+    highest_score = max(scores.values())
+
+    if highest_score == 0:
+        print("\nClassification: Unclassified")
+        print("Reason: No matching keywords were found.")
+        return
+
+    winners = [
+        category for category, score in scores.items()
+        if score == highest_score
+    ]
+
+    if len(winners) > 1:
+        print("\nClassification: Ambiguous")
+        print("Matching categories:", ", ".join(winners))
+        print("Reason: Multiple categories have equal scores.")
+    else:
+        print("\nClassification:", winners[0])
+        print("Keyword score:", highest_score)
+        print("Reason: This category has the most matching keywords.")
+
+    print("\nCategory scores:")
+    for category, score in scores.items():
+        print(category + ":", score)
+
+
+if __name__ == "__main__":
+    description = input("Enter threat report description: ")
+    audience = input("Enter intended audience: ")
+
+    classify_threat_intelligence(description, audience)
