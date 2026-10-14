@@ -1,0 +1,79 @@
+
+from urllib.parse import urlparse
+import ipaddress
+
+def detect_phishing(url):
+    suspicious_keywords = [
+        "login", "verify", "update", "secure",
+        "account", "password", "banking",
+        "signin", "confirm", "wallet"
+    ]
+
+    indicators = []
+
+    # Add a scheme if the user enters only a domain or URL
+    if "://" not in url:
+        url = "http://" + url
+
+    parsed = urlparse(url)
+    hostname = parsed.hostname or ""
+
+    if not hostname:
+        print("Invalid URL: No valid hostname found.")
+        return
+
+    hostname = hostname.lower()
+
+    # 1. Check suspicious keywords
+    matched_keywords = [
+        word for word in suspicious_keywords
+        if word in url.lower()
+    ]
+
+    if matched_keywords:
+        indicators.append(
+            "Suspicious keywords: " + ", ".join(matched_keywords)
+        )
+
+    # 2. Check whether the hostname is an IP address
+    try:
+        ipaddress.ip_address(hostname)
+        indicators.append("URL uses an IP address instead of a domain name")
+    except ValueError:
+        pass
+
+    # 3. Check excessive subdomains
+    domain_parts = hostname.split(".")
+    if len(domain_parts) > 4:
+        indicators.append("Excessive subdomains detected")
+
+    # 4. Check unusually long URLs
+    if len(url) > 100:
+        indicators.append("URL is unusually long")
+
+    # 5. Check suspicious symbols
+    if "@" in parsed.netloc:
+        indicators.append("Contains @ in the network location")
+
+    if "-" in hostname:
+        indicators.append("Hostname contains hyphens")
+
+    # Display the assessment
+    print("\n===== PHISHING URL DETECTOR =====")
+    print("URL:", url)
+
+    if indicators:
+        print("Result: SUSPICIOUS")
+        print("\nIndicators detected:")
+        for indicator in indicators:
+            print("-", indicator)
+    else:
+        print("Result: No common phishing indicators detected")
+        print("Note: This does not guarantee that the URL is safe.")
+
+    print("\nTotal indicators:", len(indicators))
+
+
+if __name__ == "__main__":
+    user_url = input("Enter a URL to check: ").strip()
+    detect_phishing(user_url)
