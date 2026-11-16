@@ -1,0 +1,31 @@
+logs = [
+    ("sai", "failed"),
+    ("sai", "failed"),
+    ("sai", "failed"),
+    ("sai", "success"),
+    ("ram", "failed"),
+    ("ram", "success")
+]
+
+user = input("Enter username to check: ")
+
+failed = 0
+detected = False
+
+for username, status in logs:
+
+    if username == user:
+
+        if status == "failed":
+            failed += 1
+
+        elif status == "success":
+            if failed >= 3:
+                print("Brute Force Attack Detected!")
+                print("User:", user)
+                print("Failed Attempts:", failed)
+                detected = True
+            failed = 0
+
+if not detected:
+    print("No Brute Force Pattern Detected.")
