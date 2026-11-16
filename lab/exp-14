@@ -1,0 +1,49 @@
+import json
+
+# Step 1: Collect raw events
+events = [
+    {"source": "Firewall", "ip": "192.168.1.10", "event": "failed_login"},
+    {"source": "Server", "ip": "192.168.1.10", "event": "failed_login"},
+    {"source": "IDS", "ip": "192.168.1.10", "event": "port_scan"},
+    {"source": "Firewall", "ip": "192.168.1.20", "event": "normal"}
+]
+
+print("Step 1: Raw Events Collected")
+print(json.dumps(events, indent=2))
+
+
+# Step 2: Normalize events
+normalized = []
+
+for e in events:
+    normalized.append({
+        "source": e["source"].lower(),
+        "source_ip": e["ip"],
+        "event_type": e["event"].lower()
+    })
+
+print("\nStep 2: Events Normalized")
+for e in normalized:
+    print(e)
+
+
+# Step 3: Correlate events
+failed_logins = {}
+
+for e in normalized:
+    if e["event_type"] == "failed_login":
+        ip = e["source_ip"]
+        failed_logins[ip] = failed_logins.get(ip, 0) + 1
+
+
+# Step 4: Generate alerts
+print("\nStep 3: Correlation and Alert Generation")
+
+for ip, count in failed_logins.items():
+    if count >= 2:
+        print("SECURITY ALERT!")
+        print("Suspicious IP:", ip)
+        print("Failed Login Attempts:", count)
+        print("Priority: P2 - High")
+
+print("\nSIEM Pipeline Completed.")
