@@ -1,0 +1,22 @@
+def classify_alert(alert):
+    alert = alert.lower()
+
+    if any(word in alert for word in ["ransomware", "data breach", "active attack"]):
+        return "P1 - Critical"
+
+    elif any(word in alert for word in ["malware", "unauthorized access", "privilege escalation"]):
+        return "P2 - High"
+
+    elif any(word in alert for word in ["failed login", "suspicious activity", "port scan"]):
+        return "P3 - Medium"
+
+    else:
+        return "P4 - Low"
+
+
+alert = input("Enter SOC Alert Description: ")
+
+priority = classify_alert(alert)
+
+print("Alert:", alert)
+print("Assigned Priority:", priority)
