@@ -1,0 +1,26 @@
+print("DEFENSE-IN-DEPTH SECURITY MODEL")
+
+attack = True
+
+layers = [
+    ("Firewall", True),
+    ("Antivirus", False),
+    ("IDS", True),
+    ("Authentication", True),
+    ("Encryption", True)
+]
+
+for name, blocked in layers:
+    print("\nChecking Layer:", name)
+
+    if attack and blocked:
+        print("Attack Blocked by", name)
+        attack = False
+        break
+    else:
+        print(name, "Failed to stop the attack")
+
+if attack:
+    print("\nAlert! Attack reached the system.")
+else:
+    print("\nSystem Protected Successfully.")
