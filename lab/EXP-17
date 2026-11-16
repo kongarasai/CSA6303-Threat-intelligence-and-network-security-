@@ -1,0 +1,22 @@
+def classify_control(control):
+    control = control.lower()
+
+    if any(x in control for x in ["policy", "management", "responsibility"]):
+        return "Organizational Controls"
+
+    elif any(x in control for x in ["training", "employee", "awareness"]):
+        return "People Controls"
+
+    elif any(x in control for x in ["firewall", "encryption", "network", "access"]):
+        return "Technological Controls"
+
+    elif any(x in control for x in ["building", "camera", "physical", "door"]):
+        return "Physical Controls"
+
+    else:
+        return "Control Domain Not Identified"
+
+
+control = input("Enter Security Control Description: ")
+
+print("ISO 27001 Control Domain:", classify_control(control))
