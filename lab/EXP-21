@@ -1,0 +1,25 @@
+def analyze_report(report):
+    keywords = {
+        "Patch Management": ["patch", "update", "vulnerability"],
+        "Security Awareness": ["training", "awareness", "phishing"],
+        "Monitoring": ["monitoring", "logs", "alerts"],
+        "Backup Strategy": ["backup", "recovery", "restore"],
+        "Access Control": ["access", "password", "permission"]
+    }
+
+    print("\nImprovement Areas Identified:")
+
+    found = False
+
+    for area, words in keywords.items():
+        if any(word in report.lower() for word in words):
+            print("-", area)
+            found = True
+
+    if not found:
+        print("No improvement areas identified.")
+
+
+report = input("Enter Post-Incident Report: ")
+
+analyze_report(report)
