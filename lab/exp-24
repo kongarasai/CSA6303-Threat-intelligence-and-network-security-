@@ -1,0 +1,34 @@
+import hashlib
+
+records = [
+    ("Evidence1", "2026-11-16 10:00:00"),
+    ("Evidence2", "2026-11-16 10:05:00"),
+    ("Evidence3", "2026-11-16 10:10:00")
+]
+
+previous_hash = "START"
+previous_time = ""
+
+print("CHAIN OF CUSTODY VERIFICATION\n")
+
+valid = True
+
+for evidence, timestamp in records:
+
+    current_hash = hashlib.sha256(
+        (evidence + timestamp + previous_hash).encode()
+    ).hexdigest()
+
+    if previous_time and timestamp < previous_time:
+        print("Timestamp Chain Broken!")
+        valid = False
+
+    print(evidence, "Hash:", current_hash[:16])
+
+    previous_hash = current_hash
+    previous_time = timestamp
+
+if valid:
+    print("\nEvidence Chain Verified Successfully.")
+else:
+    print("\nEvidence Chain Verification Failed.")
