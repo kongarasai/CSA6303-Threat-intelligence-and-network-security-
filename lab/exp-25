@@ -1,0 +1,28 @@
+baseline = {
+    "firewall": 1,
+    "antivirus": 1,
+    "encryption": 1,
+    "mfa": 1,
+    "backup": 1
+}
+
+current = {
+    "firewall": 1,
+    "antivirus": 1,
+    "encryption": 0,
+    "mfa": 0,
+    "backup": 1
+}
+
+print("SECURITY BASELINE CHECK\n")
+
+for control, required in baseline.items():
+
+    actual = current.get(control, 0)
+
+    if actual >= required:
+        print(control, ": PASS")
+    else:
+        print(control, ": FAIL")
+
+print("\nCompliance Check Completed.")
