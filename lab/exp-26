@@ -1,0 +1,42 @@
+import hashlib
+
+# Sample malware content
+sample = "CreateFile VirtualAlloc WriteProcessMemory"
+
+# Static Analysis
+print("STATIC ANALYSIS")
+
+file_hash = hashlib.sha256(sample.encode()).hexdigest()
+
+print("SHA-256 Hash:", file_hash)
+
+suspicious_apis = [
+    "CreateFile",
+    "VirtualAlloc",
+    "WriteProcessMemory",
+    "CreateRemoteThread"
+]
+
+for api in suspicious_apis:
+    if api.lower() in sample.lower():
+        print("Suspicious API Found:", api)
+
+
+# Dynamic Analysis (Simulated)
+print("\nDYNAMIC ANALYSIS")
+
+behavior_logs = [
+    "File created",
+    "Registry modified",
+    "Network connection established",
+    "Normal process executed"
+]
+
+for log in behavior_logs:
+    print("Behavior:", log)
+
+    if any(word in log.lower() for word in
+           ["registry modified", "network connection"]):
+        print("Warning: Suspicious Behavior Detected!")
+
+print("\nMalware Analysis Completed.")
