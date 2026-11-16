@@ -1,0 +1,23 @@
+def classify_threat(description):
+    text = description.lower()
+
+    threats = {
+        "Phishing": ["fake email", "phishing", "malicious link", "password theft"],
+        "DoS/DDoS": ["dos", "ddos", "flooding", "traffic overload"],
+        "Malware": ["virus", "trojan", "ransomware", "malware"],
+        "Man-in-the-Middle": ["mitm", "intercept", "eavesdropping", "packet interception"]
+    }
+
+    for threat, keywords in threats.items():
+        for word in keywords:
+            if word in text:
+                return threat
+
+    return "Unknown Threat"
+
+
+description = input("Enter Incident Description: ")
+
+result = classify_threat(description)
+
+print("Detected Network Threat:", result)
