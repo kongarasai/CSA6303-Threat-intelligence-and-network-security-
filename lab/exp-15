@@ -1,0 +1,30 @@
+def classify_incident(narrative):
+    narrative = narrative.lower()
+
+    categories = {
+        "Phishing": ["phishing", "fake email", "malicious link", "credentials stolen"],
+        "Unpatched Vulnerability": ["unpatched", "outdated software", "security patch", "exploit"],
+        "Misconfiguration": ["misconfiguration", "open port", "weak password", "incorrect settings"],
+        "Insider Threat": ["employee", "insider", "staff", "unauthorized data access"],
+        "Supply-Chain Compromise": ["third-party", "vendor", "supplier", "compromised update"]
+    }
+
+    scores = {}
+
+    for category, keywords in categories.items():
+        scores[category] = sum(
+            1 for word in keywords if word in narrative
+        )
+
+    result = max(scores, key=scores.get)
+
+    if scores[result] == 0:
+        print("Root Cause: Unknown")
+    else:
+        print("Root Cause:", result)
+        print("Matching Keywords:", scores[result])
+
+
+incident = input("Enter Security Incident Narrative: ")
+
+classify_incident(incident)
