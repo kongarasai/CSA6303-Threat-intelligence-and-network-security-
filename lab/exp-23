@@ -1,0 +1,28 @@
+# Trusted IP whitelist
+whitelist = ["192.168.1.10"]
+
+# Suspicious traffic signatures
+signatures = ["malware", "sql injection", "port scan"]
+
+# Incoming traffic
+traffic = [
+    ("192.168.1.10", "port scan"),
+    ("192.168.1.20", "malware"),
+    ("192.168.1.30", "normal traffic"),
+    ("192.168.1.40", "sql injection")
+]
+
+print("INTRUSION PREVENTION SYSTEM\n")
+
+for ip, data in traffic:
+
+    if ip in whitelist:
+        print(ip, "-> ALLOWED (Trusted Source)")
+
+    elif any(word in data.lower() for word in signatures):
+        print(ip, "-> BLOCKED (Malicious Traffic)")
+
+    else:
+        print(ip, "-> ALLOWED (Normal Traffic)")
+
+print("\nIPS Scanning Completed.")
